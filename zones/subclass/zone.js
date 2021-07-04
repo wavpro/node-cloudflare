@@ -1,13 +1,15 @@
 import owner from "../../userclasses/zone_owner.js";
 import account from "../../userclasses/zone_account.js";
 import plan from "./zone_plan.js";
+import isResourceID from '../../util/isresourceid.js';
 
 class Zone {
   /**
    * A Zone is a domain name along with its subdomains and other identities.
    * @param {object} orig The original zone recieved from Cloudflare's api.
    */
-  constructor(orig, api) {
+  constructor(orig, client) {
+    if (!isResourceID(orig.id)) throw new Error("Invalid zone ID provided in object.");
     this.id = orig.id;
     this.name = orig.name;
     this.status = orig.status;
@@ -51,7 +53,7 @@ class Zone {
         orig.plan.externally_managed
       );
     else this.pending_plan = null;
-    this.api = api;
+    this.client = client;
   }
   /**
    * Zone identifier tag.
@@ -299,11 +301,11 @@ class Zone {
   set pending_plan(value) {
     return (this._pending_plan = value);
   }
-  get api() {
+  get client() {
     return this._api;
   }
-  set api(value) {
-    this._api = value;
+  set client(value) {
+    this._client = value;
   }
   /**
    * Creates an a owner class for the Zone and adds it to the zone this.owner property.

@@ -29,7 +29,7 @@ class Zones {
       client.api
         .get(url)
         .then((result) => {
-          const zone = new Zone(result.result, client.api);
+          const zone = new Zone(result.result, client);
           if (
             (opts.useCache === undefined || opts.useCache !== false) &&
             client.cache !== undefined
@@ -51,7 +51,7 @@ class Zones {
         .then((res) => {
           let resArray = [];
           for (let zone of res.result) {
-            const newZone = new Zone(zone, client.api);
+            const newZone = new Zone(zone, client);
             resArray.push(newZone);
           }
           res.result = resArray;
