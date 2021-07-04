@@ -13,6 +13,7 @@ client.zones.list({useCache: true}).then(r => {
         console.time("two")
         client.zones.get("e435c5c26d5f650e1e56d58ea6c8df70").then(r => {
             console.timeEnd("two");
+            console.log(r.DNS.dns_records);
         });
     });
 })

@@ -2,6 +2,7 @@ import owner from "../../userclasses/zone_owner.js";
 import account from "../../userclasses/zone_account.js";
 import plan from "./zone_plan.js";
 import isResourceID from '../../util/isresourceid.js';
+import Zone_DNS from '../../dns/zone_dns.js';
 
 class Zone {
   /**
@@ -54,6 +55,7 @@ class Zone {
       );
     else this.pending_plan = null;
     this.client = client;
+    this.DNS = new Zone_DNS(this, this.client);
   }
   /**
    * Zone identifier tag.
@@ -423,6 +425,14 @@ class Zone {
       permissions: this.permissions,
       plan: this.plan.toObject(),
     };
+  }
+  get DNS () {
+    return this._DNS;
+  }
+  set DNS(value) {
+    this._DNS = value;
+    this.DNS.update();
+    return;
   }
 }
 
