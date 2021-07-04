@@ -33,20 +33,11 @@ class Client {
       throw new Error("No API Key or Token was specified.");
     }
     if (options.cache === false) this.cache = undefined; else this.cache = new Cache();
-    this._baseURL = options.baseURL || "https://api.cloudflare.com/client/v4";
-    this._userid = options.userid || null;
+    this.baseURL = options.baseURL || "https://api.cloudflare.com/client/v4";
+    this.userid = options.userid || null;
     this.USER_AGENT = USER_AGENT;
     this._api = new API(this);
     this._zones = new Zones(this);
-  }
-  getBaseURL() {
-    return this._baseURL;
-  }
-  get method() {
-    return this._method;
-  }
-  set method(value) {
-    return (this._method = value);
   }
   get token() {
     return this._token;

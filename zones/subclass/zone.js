@@ -304,7 +304,7 @@ class Zone {
     return (this._pending_plan = value);
   }
   get client() {
-    return this._api;
+    return this._client;
   }
   set client(value) {
     this._client = value;

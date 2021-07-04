@@ -24,7 +24,7 @@ class Zones {
         });
       }
     }
-    let url = `${client._baseURL}/zones/${id}`;
+    let url = `${client.baseURL}/zones/${id}`;
     return new Promise(function (resolve, reject) {
       client.api
         .get(url)
@@ -47,7 +47,7 @@ class Zones {
       let params = options;
       if (params.useCache !== undefined) delete params.useCache;
       client.api
-        .get(`${client._baseURL}/zones`, params)
+        .get(`${client.baseURL}/zones`, params)
         .then((res) => {
           let resArray = [];
           for (let zone of res.result) {
@@ -76,7 +76,7 @@ class Zones {
     const client = this._client;
     return new Promise(function (resolve, reject) {
       client.api
-        .post(`${client._baseURL}/zones`, {
+        .post(`${client.baseURL}/zones`, {
           name: domain,
           account: {
             id: userID,
@@ -95,7 +95,7 @@ class Zones {
     const client = this._client;
     return new Promise(function (resolve, reject) {
       client.api
-        .delete(`${client._baseURL}/zones/${id}`)
+        .delete(`${client.baseURL}/zones/${id}`)
         .then(resolve)
         .catch(reject);
     });

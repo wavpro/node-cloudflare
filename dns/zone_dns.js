@@ -1,7 +1,7 @@
 class DNS {
-  constructor(zone, client) {
+  constructor(zone) {
     this.zone = zone;
-    this.client = client;
+    this.client = zone.client;
   }
   get zone() {
     return this._zone;
