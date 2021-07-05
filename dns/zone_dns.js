@@ -1,7 +1,10 @@
+import Record from './dns_record.js'
+
 class DNS {
   constructor(zone) {
     this.zone = zone;
     this.client = zone.client;
+    this.update(this.client.cache == true);
   }
   get zone() {
     return this._zone;
@@ -19,7 +22,13 @@ class DNS {
     return this._dns_records;
   }
   set dns_records(value) {
-    return (this._dns_records = value);
+    if (!Array.isArray(value)) throw new TypeError("Invalid dns records.")
+    let endArray = [];
+    for (let record of value) {
+      endArray.push(new Record(this, record));
+    }
+    this._dns_records = endArray;
+    return;
   }
   update(useCache = true) {
     const zone = this.zone;
@@ -48,6 +57,19 @@ class DNS {
         }
         this.dns_records = endArray;
       });
+  }
+  list() {
+    const zone = this.zone;
+    const client = this.client;
+    const DNS = this;
+    return new Promise((resolve, reject) => {
+      client.api
+      .get(`${client._baseURL}/zones/${zone.id}/dns_records`)
+      .then((res) => {
+        DNS.dns_records = res.result;
+        resolve(DNS.dns_records);
+      })
+    })
   }
 }
 
