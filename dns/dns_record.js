@@ -23,7 +23,7 @@ if (getNodeVersion() >= 14) {
       this.zone_name = record.zone_name;
       this.created_on = new Date(record.created_on);
       this.modified_on = new Date(record.modified_on);
-      this.data = record.data;
+      this.data = record.data || {};
       this.meta = record.meta;
     }
     #parent = {};
@@ -148,7 +148,7 @@ if (getNodeVersion() >= 14) {
       /**
        * Metadata about the record.
        */
-      this.data = record.data;
+      this.data = record.data || {};
       /**
        * Extra Cloudflare-specific information about the record.
        */
