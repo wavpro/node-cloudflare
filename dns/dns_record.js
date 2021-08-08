@@ -7,7 +7,7 @@ let Record = class {
 if (getNodeVersion() >= 14) {
   // Uses private methods rather than public for manipulating data (EXPERIMENTAL).
   // Will only be enabled for node.js V14 or above users
-  Record = class {
+  eval(`Record = class {
     constructor(parent, record) {
       this.#parent = parent;
       this.#record = record;
@@ -84,7 +84,41 @@ if (getNodeVersion() >= 14) {
      * Extra Cloudflare-specific information about the record.
      */
     meta = {};
-  };
+    update(options = {
+      name: this.name,
+      type: this.type,
+      content: this.content,
+      ttl: this.ttl,
+      proxied: this.proxied,
+    }) {
+      if (!options) options = {};
+      if (!options.name) options.name = this.name;
+      if (!options.type) options.type = this.type;
+      if (!options.content) options.content = this.content;
+      if (!options.ttl) options.ttl = this.ttl;
+      const client = this.#parent.client;
+      const record = this;
+      return new Promise((resolve, reject) => {
+        client.api
+          .put(client.baseURL + \`/zones/$\{record.#parent.zone.id}/dns_records/$\{record.id}\`, options)
+          .then((response) => {
+            if (response.success) {
+              const result = response.result;
+              record.ttl = result.ttl;
+              record.modified_on = result.modified_on;
+              record.name = result.name;
+              record.type = result.type;
+              record.content = result.content;
+              record.proxiable = result.proxiable;
+              record.proxied = result.proxied;
+              resolve(record);
+            } else {
+              reject(response.errors);
+            }
+          })
+      })
+    }
+  };`)
 } else {
   // If private fields are not supported, it will use normal properties.
   Record = class {
@@ -153,6 +187,40 @@ if (getNodeVersion() >= 14) {
        * Extra Cloudflare-specific information about the record.
        */
       this.meta = record.meta;
+    }
+    update(options = {
+      name: this.name,
+      type: this.type,
+      content: this.content,
+      ttl: this.ttl,
+      proxied: this.proxied,
+    }) {
+      if (!options) options = {};
+      if (!options.name) options.name = this.name;
+      if (!options.type) options.type = this.type;
+      if (!options.content) options.content = this.content;
+      if (!options.ttl) options.ttl = this.ttl;
+      const client = this._parent.client;
+      const record = this;
+      return new Promise((resolve, reject) => {
+        client.api
+          .put(client.baseURL + `/zones/${record._parent.zone.id}/dns_records/${record.id}`, options)
+          .then((response) => {
+            if (response.success) {
+              const result = response.result;
+              record.ttl = result.ttl;
+              record.modified_on = result.modified_on;
+              record.name = result.name;
+              record.type = result.type;
+              record.content = result.content;
+              record.proxiable = result.proxiable;
+              record.proxied = result.proxied;
+              resolve(record);
+            } else {
+              reject(response.errors);
+            }
+          })
+      })
     }
   };
 }

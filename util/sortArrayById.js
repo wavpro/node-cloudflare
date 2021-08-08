@@ -1,6 +1,9 @@
-export default function(array, id) {
-    array.filter(item => {
-        return item.id === id;
-    })
-    return array;
+export default function (array, id) {
+  let endArray = [];
+  array.forEach((item) => {
+    if (item.id === id) {
+      return endArray.push(item);
+    } else return;
+  });
+  return endArray;
 }

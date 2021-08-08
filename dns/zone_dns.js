@@ -1,5 +1,5 @@
 import Record from './dns_record.js';
-import sortArrayById from '../utils/sortArrayById.js';
+import sortArrayById from '../util/sortArrayById.js';
 
 class DNS {
   constructor(zone) {
@@ -59,6 +59,9 @@ class DNS {
         this.dns_records = endArray;
       });
   }
+  /**
+   * List all DNS records for a given zone. 
+   */
   list() {
     const zone = this.zone;
     const client = this.client;
