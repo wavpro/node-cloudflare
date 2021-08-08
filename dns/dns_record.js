@@ -84,6 +84,15 @@ if (getNodeVersion() >= 14) {
      * Extra Cloudflare-specific information about the record.
      */
     meta = {};
+    delete() {
+      const client = this.#parent.client;
+      const record = this;
+      return new Promise((resolve, reject) => {
+        client.api
+          .delete(client.baseURL + \`/zones/$\{record.#parent.zone.id}/dns_records/$\{record.id}\`)
+          .then(res => resolve(res.result));
+      })
+    }
     update(options = {
       name: this.name,
       type: this.type,
@@ -189,6 +198,15 @@ if (getNodeVersion() >= 14) {
        */
       this.meta = record.meta;
     }
+    delete() {
+      const client = this._parent.client;
+      const record = this;
+      return new Promise((resolve, reject) => {
+        client.api
+          .delete(client.baseURL + `/zones/${record._parent.zone.id}/dns_records/${record.id}`)
+          .then(res => resolve(res.result));
+      })
+    }
     update(options = {
       name: this.name,
       type: this.type,
@@ -219,7 +237,7 @@ if (getNodeVersion() >= 14) {
               record.proxied = result.proxied;
               resolve(record);
             } else {
-              reject(response.errors);
+              reject(response.errors[0].code + ": " + response.errors[0].message);
             }
           })
       })
