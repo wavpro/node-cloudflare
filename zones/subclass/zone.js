@@ -3,6 +3,7 @@ import account from "../../userclasses/zone_account.js";
 import plan from "./zone_plan.js";
 import isResourceID from '../../util/isresourceid.js';
 import Zone_DNS from '../../dns/zone_dns.js';
+import node_util from 'util';
 
 class Zone {
   /**
@@ -425,6 +426,9 @@ class Zone {
       permissions: this.permissions,
       plan: this.plan.toObject(),
     };
+  }
+  [node_util.inspect.custom]() {
+    return this.toObject();
   }
   get DNS () {
     return this._DNS;

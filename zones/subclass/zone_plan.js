@@ -1,3 +1,5 @@
+import node_util from 'util';
+
 class Plan {
   /**
    * A zone plan, used by the Zone class.
@@ -140,6 +142,9 @@ class Plan {
       legacy_discount: this.legacy_discount,
       externally_managed: this.externally_managed,
     };
+  }
+  [node_util.inspect.custom]() {
+    return this.toObject();
   }
 }
 

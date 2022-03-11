@@ -1,4 +1,5 @@
 import getNodeVersion from "../util/getNodeVersion.js";
+import node_util from 'util';
 
 let Record = class {
     
